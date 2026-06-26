@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configuratore & Vetrina Borse Uncinetto</title>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script type="text/javascript">
+   (function(){
+      emailjs.init("DNvl46PSqVhuiOc6M");
+   })();
+</script>
+
+<style>
+body{
+font-family: Arial, sans-serif;
+background: #f5f1eb;
+padding: 20px;
+max-width: 1200px;
+margin: auto;
+}
+
+h1{
+text-align: center;
+color: #5c4033;
+margin-bottom: 30px;
+}
+
+/* --- SISTEMA A SCHEDE (TAB MAIN) --- */
+.tab-container {
+display: flex;
+justify-content: center;
+gap: 10px;
+margin-bottom: 25px;
+}
+
+.tab-btn {
+background: #dcd1c4;
+color: #5c4033;
+border: none;
+padding: 12px 25px;
+font-size: 16px;
+font-weight: bold;
+border-radius: 8px;
+cursor: pointer;
+transition: 0.3s;
+width: auto;
+}
+
+.tab-btn.active {
+background: #5c4033;
+color: #fff;
+}
+
+.tab-content {
+display: none;
+}
+
+.tab-content.active {
+display:block;
+}
+
+/* --- TITOLO VETRINA --- */
+.titolo-vetrina-sgarzoso {
+font-size: 28px;
+font-weight: 800;
+color: #000000;
+text-shadow: 1px 1px 2px rgba(209, 180, 86, 0.2);
+letter-spacing: 0.5px;
+margin-bottom: 20px;
+border-left: 5px solid #2e6b43;
+padding-left: 15px;
+}
+
+/* --- SOTTO-CATEGORIE VETRINA (FILTRI) --- */
+.sub-tab-container {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin: 15px 0 25px 0;
+border-bottom: 2px solid #ddd;
+padding-bottom: 12px;
+}
+
+.sub-tab-btn {
+background: #ffffff;
+color: #555;
+border: 1px solid #ccc;
+padding: 8px 16px;
+font-size: 14px;
+font-weight: bold;
+border-radius: 20px;
+cursor: pointer;
+transition: all 0.2s ease;
+width: auto;
+}
+
+.sub-tab-btn:hover:not(.active) {
+background: #f5e6d3;
+color: #4a3329;
+border-color: #d1b456;
+transform: translateY(-1px);
+}
+
+.sub-tab-btn.active {
+background: #2e6b43;
+color: white;
+border-color: #2e6b43;
+}
+
+/* --- VETRINA CATALOGO --- */
+.vetrina-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+gap: 20px;
+margin-top: 20px;
+justify-items: start;
+}
+
+.vetrina-card {
+background: white;
+border-radius: 12px;
+padding: 20px;
+border: 2px solid #ddd;
+text-align: center;
+transition: 0.3s;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+cursor: pointer;
+position: relative;
+box-sizing: border-box;
+width: 100%;
+max-width: 320px;
+height: 420px;
+}
+
+.vetrina-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+border-color: #2e6b43;
+}
+
+.vetrina-price {
+font-size: 20px;
+font-weight: bold;
+color: #3fa750;
+margin: 10px 0;
+}
+
+.vetrina-buttons-container {
+display: flex;
+gap: 8px;
+margin-top: 10px;
+width: 100%;
+}
+
+.btn-vedi-dettagli {
+background: #757575;
+color: white;
+border: none;
+padding: 10px;
+font-weight: bold;
+border-radius: 8px;
+cursor: pointer;
+flex: 1;
+font-size: 14px;
+transition: background 0.2s;
+}
+
+.btn-vedi-dettagli:hover {
+background: #545454;
+}
+
+.btn-carrello-rapido {
+background: #2e6b43;
+color: white;
+border: none;
+padding: 10px;
+border-radius: 8px;
+cursor: pointer;
+width: 45px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: 0.2s;
+}
+
+.btn-carrello-rapido:hover {
+background: #3fa750;
+}
+
+.btn-carrello-rapido svg {
+width: 18px;
+height: 18px;
+fill: currentColor;
+}
+
+/* --- CONFIGURATORE --- */
+.grid{
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 15px;
+}
+
+.card{
+background: #fff;
+border: 2px solid #ddd;
+border-radius: 12px;
+padding: 15px;
+cursor: pointer;
+transition: 0.3s;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+}
+
+.card:hover{
+transform: translateY(-3px);
+}
+
+.card.selected{
+border-color: #5c4033;
+}
+
+.photo {
+width: 100%;
+height: 160px;
+background: #e8e8e8;
+border-radius: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+font-weight: bold;
+overflow: hidden;
+margin-bottom: 10px;
+}
+
+.photo img {
+width: 100%;
+height: 100%;
+display: block;
+object-fit: cover;
+}
+
+.section{
+background: white;
+padding: 20px;
+border-radius: 12px;
+margin-top: 20px;
+}
+
+select, input, button{
+width: 100%;
+padding: 10px;
+margin-top: 8px;
+border-radius: 8px;
+border: 1px solid #ccc;
+box-sizing: border-box;
+}
+
+button{
+background: #3b42c8;
+color: white;
+border: none;
+cursor: pointer;
+font-weight: bold;
+font-size: 16px;
+padding: 12px;
+}
+
+button:hover{
+opacity: 0.9;
+}
+
+.color-container {
+display: flex;
+flex-wrap: wrap;
+gap: 15px;
+margin-top: 15px;
+padding: 5px;
+}
+
+.color {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+min-width: 100px;
+height: 45px;
+padding: 0 20px;
+border-radius: 14px;
+font-weight: 500;
+font-size: 15px;
+cursor: pointer;
+transition: all 0.2s ease;
+border: 1px solid rgba(0, 0, 0, 0.1);
+user-select: none;
+box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.color[data-name="Nero"] { background-color: #000000; color: #fff; border-color: #333; }
+.color[data-name="Marrone"] { background-color: #633c30; color: #fff; }
+.color[data-name="Blu"] { background-color: #184eab; color: #fff; }
+.color[data-name="Azzurro"] { background-color: #0ba3ea; color: #fff; }
+.color[data-name="Beige"] { background-color: #e6d5b8; color: #5c4033; }
+.color[data-name="Verde"] { background-color: #3fa750; color: #fff; }
+.color[data-name="Viola"] { background-color: #6b1b75; color: #fff; }
+.color[data-name="Bianco"] { background-color: #ffffff; color: #000000; border-color: #ddd; }
+.color[data-name="Rosso"] { background-color: #b32626; color: #fff; }
+.color[data-name="Rosa"] { background-color: #d5748e; color: #fff; }
+.color[data-name="Arancione"] { background-color: #f28538; color: #fff; }
+.color[data-name="Oro"] { background-color: #d1b456; color: #fff; }
+
+.color.selected {
+outline: 3px solid #000000;
+outline-offset: 3px;
+transform: scale(0.98);
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.input-richiesta-extra {
+border: 2px solid #5c4033 !important;
+background-color: #fffaf5 !important;
+font-weight: bold;
+color: #5c4033;
+transition: all 0.3s ease;
+}
+
+#preview{
+width: 100%;
+max-width: 280px;
+border-radius: 12px;
+display: block;
+margin: auto;
+box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.box-anteprima-live {
+background: #fdfbf7;
+border: 2px dashed #d1b456;
+border-radius: 12px;
+padding: 15px;
+margin-top: 15px;
+text-align: left;
+max-width: 500px;
+margin-left: auto;
+margin-right: auto;
+}
+
+.badge-colore-live {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: white;
+padding: 6px 12px;
+border-radius: 8px;
+border: 1px solid #ddd;
+font-size: 14px;
+font-weight: bold;
+box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+width: fit-content;
+}
+
+.riga-info-live {
+margin: 6px 0;
+font-size: 15px;
+color: #444;
+}
+
+.container-colori-live {
+margin-top: 10px; 
+display: flex; 
+flex-direction: column;
+gap: 8px; 
+align-items: flex-start;
+}
+
+/* --- MODALI --- */
+.modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(0, 0, 0, 0.6);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+visibility: hidden;
+opacity: 0;
+transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+visibility: visible;
+opacity: 1;
+}
+
+.modal-content {
+background: white;
+padding: 30px;
+border-radius: 16px;
+max-width: 550px;
+width: 90%;
+box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+transform: translateY(-20px);
+transition: transform 0.3s ease;
+color: #333;
+max-height: 90vh;
+overflow-y: auto;
+position: relative;
+}
+
+.modal-overlay.active .modal-content {
+transform: translateY(0);
+}
+
+.modal-close-x {
+position: absolute;
+top: 15px;
+right: 15px;
+background: none;
+border: none;
+color: #b32626;
+font-size: 26px;
+font-weight: bold;
+cursor: pointer;
+width: auto;
+padding: 0;
+margin: 0;
+line-height: 1;
+}
+
+.modal-header {
+font-size: 22px;
+font-weight: bold;
+color: #3fa750;
+margin-bottom: 15px;
+border-bottom: 2px solid #eee;
+padding-bottom: 10px;
+}
+
+.modal-section-title {
+font-weight: bold;
+text-transform: uppercase;
+font-size: 13px;
+color: #888;
+margin-top: 15px;
+margin-bottom: 5px;
+}
+
+.modal-text {
+font-size: 15px;
+line-height: 1.5;
+background: #f9f6f0;
+padding: 12px;
+border-radius: 8px;
+margin: 5px 0;
+border-left: 4px solid #5c4033;
+}
+
+.riga-specifica-colore {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+}
+
+.specifica-color-box {
+width: 20px;
+height: 20px;
+border-radius: 5px;
+display: inline-block;
+border: 1px solid rgba(0,0,0,0.25);
+vertical-align: middle;
+}
+
+/* --- CARRELLO --- */
+.cart-title-container {
+display: flex;
+align-items: center;
+gap: 10px;
+color: #000000;
+}
+
+.cart-item {
+background: #fff;
+padding: 20px;
+border-radius: 12px;
+border: 1px solid #ddd;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 20px;
+min-height: 180px; 
+box-sizing: border-box;
+}
+
+.cart-left-block {
+display: flex;
+align-items: center;
+gap: 20px;
+flex: 1;
+}
+
+.cart-thumb {
+width: 180px;  
+height: 180px; 
+background: #f0f0f0;
+border-radius: 8px;
+overflow: hidden;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-shrink: 0;
+border: 1px solid #eee;
+}
+
+.cart-thumb img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+background: #f0f0f0;
+}
+
+.cart-color-mini-box {
+width: 20px;
+height: 20px;
+border-radius: 5px;
+display: inline-block;
+border: 1px solid rgba(0,0,0,0.25);
+margin-left: 4px;
+margin-right: 4px;
+vertical-align: middle;
+}
+
+.btn-rimuovi {
+background: #b32626;
+color: white;
+padding: 10px 18px;
+font-size: 14px;
+font-weight: bold;
+width: auto;
+margin-top: 0;
+border-radius: 8px;
+cursor: pointer;
+transition: background 0.2s;
+}
+
+.btn-rimuovi:hover {
+background: #8f1e1e;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Borse all'Uncinetto Shop</h1>
+
+<div class="tab-container">
+    <button class="tab-btn active" onclick="switchTab('configuratore')">1. Crea la tua borsa</button>
+    <button class="tab-btn" onclick="switchTab('vetrina')">2. Vetrina Pronta Consegna</button>
+</div>
+
+<div id="tab-configuratore" class="tab-content active">
+    <div class="section">
+        <h2>1. Scegli la tipologia</h2>
+        <div class="grid" id="cards"></div>
+    </div>
+
+    <div class="section">
+        <h2>2. Anteprima personalizzazione</h2>
+        <img id="preview" src="https://via.placeholder.com/280x200?text=Seleziona+una+borsa">
+        
+        <div class="box-anteprima-live">
+            <div class="riga-info-live"><strong>Modello:</strong> <span id="live-modello" style="font-weight:bold; color:#5c4033;">Nessuno</span></div>
+            <div class="riga-info-live"><strong>Grandezza:</strong> <span id="live-grandezza" style="font-weight:bold; color:#5c4033;">Non selezionata</span></div>
+            <div class="container-colori-live">
+                <div id="live-preview-c1" class="badge-colore-live" style="display:none;"></div>
+                <div id="live-preview-c2" class="badge-colore-live" style="display:none;"></div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 25px;">Colore 1</h3>
+        <div class="color-container" id="container-colore1">
+            <span class="color" data-name="Nero" data-color="#000000" data-price="0">Nero</span>
+            <span class="color" data-name="Marrone" data-color="#633c30" data-price="0">Marrone</span>
+            <span class="color" data-name="Blu" data-color="#184eab" data-price="0">Blu</span>
+            <span class="color" data-name="Azzurro" data-color="#0ba3ea" data-price="0">Azzurro</span>
+            <span class="color" data-name="Verde" data-color="#3fa750" data-price="0">Verde</span>
+            <span class="color" data-name="Viola" data-color="#6b1b75" data-price="0">Viola</span>
+            <span class="color" data-name="Bianco" data-color="#ffffff" data-price="0">Bianco</span>
+            <span class="color" data-name="Beige" data-color="#e6d5b8" data-price="0">Beige</span>
+            <span class="color" data-name="Rosso" data-color="#b32626" data-price="0">Rosso</span>
+            <span class="color" data-name="Rosa" data-color="#d5748e" data-price="0">Rosa</span>
+            <span class="color" data-name="Arancione" data-color="#f28538" data-price="0">Arancione</span>
+            <span class="color" data-name="Oro" data-color="#d1b456" data-price="0">Oro</span>
+            <input id="richieste-colore1" class="input-richiesta-extra" placeholder="Richieste di colori extra per Colore 1 >>>" onfocus="pulisciColoreSelezionato(1)" oninput="aggiornaAnteprimaConfiguratore()">
+        </div>
+
+        <h3 style="margin-top: 25px;">Colore 2</h3>
+        <div class="color-container" id="container-colore2">
+            <span class="color" data-name="Nero" data-color="#000000" data-price="0">Nero</span>
+            <span class="color" data-name="Marrone" data-color="#633c30" data-price="0">Marrone</span>
+            <span class="color" data-name="Blu" data-color="#184eab" data-price="0">Blu</span>
+            <span class="color" data-name="Azzurro" data-color="#0ba3ea" data-price="0">Azzurro</span>
+            <span class="color" data-name="Verde" data-color="#3fa750" data-price="0">Verde</span>
+            <span class="color" data-name="Viola" data-color="#6b1b75" data-price="0">Viola</span>
+            <span class="color" data-name="Bianco" data-color="#ffffff" data-price="0">Bianco</span>
+            <span class="color" data-name="Beige" data-color="#e6d5b8" data-price="0">Beige</span>
+            <span class="color" data-name="Rosso" data-color="#b32626" data-price="0">Rosso</span>
+            <span class="color" data-name="Rosa" data-color="#d5748e" data-price="0">Rosa</span>
+            <span class="color" data-name="Arancione" data-color="#f28538" data-price="0">Arancione</span>
+            <span class="color" data-name="Oro" data-color="#d1b456" data-price="5">Oro</span>
+            <input id="richieste-colore2" class="input-richiesta-extra" placeholder="Richieste di colori extra per Colore 2 >>>" onfocus="pulisciColoreSelezionato(2)" oninput="aggiornaAnteprimaConfiguratore()">
+        </div>
+        
+        <button style="margin-top: 25px; background: #5c4033;" onclick="aggiungiConfigurataAlCarrello()">Aggiungi questa creazione al Carrello</button>
+    </div>
+</div>
+
+<div id="tab-vetrina" class="tab-content">
+    <div class="section">
+        <div class="titolo-vetrina-sgarzoso">Catalogo Borse Pronte per l'Acquisto</div>
+        
+        <div class="sub-tab-container">
+            <button class="sub-tab-btn active" onclick="filtraVetrina('bottone', this)">Borse a bottone</button>
+            <button class="sub-tab-btn" onclick="filtraVetrina('pochette', this)">Pochette</button>
+            <button class="sub-tab-btn" onclick="filtraVetrina('scatto', this)">Borse a scatto</button>
+            <button class="sub-tab-btn" onclick="filtraVetrina('tracolla', this)">Borse a tracolla</button>
+            <button class="sub-tab-btn" onclick="filtraVetrina('accessori', this)">Accessori</button>
+        </div>
+
+        <div class="vetrina-grid" id="vetrina-cards"></div>
+    </div>
+</div>
+
+<div class="section" id="sezione-carrello">
+    <div class="cart-title-container">
+        <svg style="width:26px;height:26px;fill:currentColor;" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        <h2>3. Il tuo Carrello</h2>
+    </div>
+    <div id="summary" style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; margin-top: 15px;"></div>
+    <h2 id="totale" style="margin-top: 20px; color:#3fa750;">Totale ordine: €0</h2>
+</div>
+
+<div class="section" id="sezione-dati-cliente">
+    <h2>4. Dati Cliente &amp; Conferma</h2>
+    <input id="nome" placeholder="Nome">
+    <input id="cognome" placeholder="Cognome">
+    <input id="telefono" placeholder="Telefono" oninput="formattaTelefono(this); validaTelefonoAlVolo();" onblur="validaTelefonoAlVolo()">
+    <div id="phone-warning" style="color: #b32626; font-size: 13px; font-weight: bold; margin-top: 4px; display: none;">⚠ Il numero di telefono deve contenere esattamente 10 cifre.</div>
+    <button style="margin-top: 25px; background: #3fa750;" onclick="conferma()">Invia e Conferma Ordine</button>
+</div>
+
+<div class="modal-overlay" id="vetrinaModal" onclick="chiudiModaleSeEsterno(event, 'vetrinaModal')">
+    <div class="modal-content">
+        <button class="modal-close-x" onclick="chiudiModaleVetrina()">×</button>
+        <div class="modal-header" id="v-modal-title">Dettaglio Prodotto</div>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div id="v-modal-img" style="width: 100%; height: 250px; background: #e8e8e8; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow:hidden;"></div>
+            <div>
+                <div class="modal-section-title">Descrizione</div>
+                <p id="v-modal-desc" style="line-height: 1.5; margin: 5px 0;"></p>
+                <div class="modal-section-title">Specifiche Prodotto</div>
+                <div class="modal-text">
+                    <strong>Misura:</strong> <span id="v-modal-misura"></span><br>
+                    <div class="riga-specifica-colore" style="margin-top:4px;">
+                        <strong>Colore Principale:</strong> <span id="v-modal-c1"></span> <span id="v-modal-box1"></span>
+                    </div><br>
+                    <div class="riga-specifica-colore" style="margin-top:4px;">
+                        <strong>Dettagli/Colore 2:</strong> <span id="v-modal-c2"></span> <span id="v-modal-box2"></span>
+                    </div>
+                </div>
+                <div class="vetrina-price" id="v-modal-price" style="text-align: left; font-size: 24px; margin-top: 15px;"></div>
+                <button id="v-modal-add-btn">Aggiungi al Carrello</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="customModal" onclick="chiudiModaleSeEsterno(event, 'customModal')">
+    <div class="modal-content">
+        <button class="modal-close-x" onclick="chiudiModalSenzaSvuotare()">×</button>
+        <div class="modal-header">✓ Ordine ricevuto con successo!</div>
+        <div class="modal-section-title">Dati Cliente</div>
+        <div class="modal-text" id="modalDatiCliente"></div>
+        <div class="modal-section-title">Riepilogo Prodotti Acquistati</div>
+        <div id="modalDatiBorsa" style="display:flex; flex-direction:column; gap:12px;"></div>
+        <button style="background:#5c4033; margin-top: 20px;" onclick="chiudiModalConSvuotamento()">Svuota Carrello e Chiudi</button>
+    </div>
+</div>
+
+<script>
+let situazione = null;
+let selezione = null;
+let misura = { name: '', price: 0 };
+let colori1 = [];
+let colori2 = [];
+let carrello = []; 
+let filtroAttivo = 'bottone';
+
+const prodotti = [
+    { name: 'Borsa con bottone', image: 'borsa.png', misure: [{name: 'Piccola (20€)', price: 20}, {name: 'Media (25€)', price: 25}, {name: 'Grande (30€)', price: 30}] },
+    { name: 'Pochette', image: 'pochette.jpg', misure: [{name: '20 cm (10€)', price: 10}, {name: '25 cm (15€)', price: 15}, {name: '30 cm (20€)', price: 20}] },
+    { name: 'Borsa con chiusura a scatto', image: 'borsascatto.webp', misure: [{name: '15 cm (20€)', price: 20}, {name: '20 cm (25€)', price: 25}, {name: '25 cm (30€)', price: 30}] },
+    { name: 'Borsa a tracolla', image: 'borsatracolla.webp', misure: [{name: 'Piccola (15€)', price: 15}, {name: 'Media (20€)', price: 20}, {name: 'Grande (25€)', price: 25}] },
+    { name: 'Accessori su richiesta', image: 'accessori.jpg', misure: [{name: 'Porta AirPods (5€)', price: 5}, {name: 'Porta Telefono (5€)', price: 5}, {name: 'Altro (prezzi su richiesta)', price: 0}] }
+];
+
+
+
+const vetrinaBorse = [
+    { id: 1, categoria: "bottone", name: "Borsa Bottone", image: "azzurro-rosa.png", descrizione: "", misura: "Grande", colore1: "Azzurro", colore1Hex: "#0ba3ea", colore2: "Rosa", colore2Hex: "#d5748e", price: 35 },
+    { id: 2, categoria: "bottone", name: "Borsa Bottone", image: "marrone-bianco.png", descrizione: "", misura: "Media", colore1: "Marrone", colore1Hex: "#633c30", colore2: "Bianco", colore2Hex: "#ffffff", price: 25 },
+    { id: 3, categoria: "bottone", name: "Borsa Bottone", image: "blu-bianco.png", descrizione: "", misura: "Media", colore1: "Blu", colore1Hex: "#184eab", colore2: "Bianco", colore2Hex: "#ffffff", price: 25 },
+    { id: 4, categoria: "bottone", name: "Borsa Bottone", image: "azzurro-bianco.png", descrizione: "", misura: "Piccola", colore1: "Azzurro", colore1Hex: "#0ba3ea", colore2: "Bianco", colore2Hex: "#ffffff", price: 20 },
+    { id: 5, categoria: "bottone", name: "Borsa Bottone", image: "verde-bianco.png", descrizione: "", misura: "Piccola", colore1: "Verde", colore1Hex: "#3fa750", colore2: "Bianco", colore2Hex: "#ffffff", price: 20 },
+    { id: 6, categoria: "bottone", name: "Borsa Bottone", image: "viola-bianco.png", descrizione: "", misura: "Media", colore1: "Viola", colore1Hex: "#6b1b75", colore2: "Bianco", colore2Hex: "#ffffff", price: 28 },
+    { id: 7, categoria: "bottone", name: "Borsa Bottone", image: "bianco-nero.png", descrizione: "", misura: "Piccola", colore1: "Bianco", colore1Hex: "#ffffff", colore2: "Nero", colore2Hex: "#000000", price: 22 },
+    { id: 8, categoria: "bottone", name: "Borsa Bottone", image: "bianco-rosa.png", descrizione: "", misura: "Media", colore1: "Bianco", colore1Hex: "#ffffff", colore2: "Rosa", colore2Hex: "#d5748e", price: 25 },
+    { id: 9, categoria: "bottone", name: "Borsa Bottone", image: "bianco-rosso.png", descrizione: "", misura: "Grande", colore1: "Rosso", colore1Hex: "#b32626", colore2: "Bianco", colore2Hex: "#ffffff", price: 35 },
+    { id: 10, categoria: "bottone", name: "Borsa Bottone", image: "bianco-rosa.png", descrizione: "", misura: "Media", colore1: "Bianco", colore1Hex: "#ffffff", colore2: "Rosa", colore2Hex: "#d5748e", price: 25 },
+    { id: 11, categoria: "bottone", name: "Borsa Bottone", image: "arancione-bianco.png", descrizione: "", misura: "Piccola", colore1: "Arancione", colore1Hex: "#f28538", colore2: "Bianco", colore2Hex: "#ffffff", price: 20 },
+    { id: 12, categoria: "bottone", name: "Borsa Bottone", image: "bianco-verde.png", descrizione: "", misura: "Piccola", colore1: "Bianco", colore1Hex: "#ffffff", colore2: "Verde", colore2Hex: "#3fa750", price: 20 },
+
+    { id: 13, categoria: "pochette", name: "Pochette Notte Nera", image: "pochette.jpg", descrizione: "Perfetta per gli eventi serali formali ed eleganti.", misura: "25 cm", colore1: "Nero", colore1Hex: "#000000", colore2: "Oro", colore2Hex: "#d1b456", price: 15 },
+    { id: 14, categoria: "pochette", name: "Pochette Fuchsia Pop", image: "pochette.jpg", descrizione: "Un tocco eccentrico ed estroso per accendere il tuo outfit.", misura: "20 cm", colore1: "Rosa", colore1Hex: "#d5748e", colore2: "Viola", colore2Hex: "#6b1b75", price: 12 },
+    { id: 15, categoria: "pochette", name: "Pochette Emerald Wave", image: "pochette.jpg", descrizione: "Intreccio compatto e geometrico color verde smeraldo.", misura: "25 cm", colore1: "Verde", colore1Hex: "#3fa750", colore2: "Beige", colore2Hex: "#e6d5b8", price: 15 },
+    { id: 16, categoria: "pochette", name: "Pochette Sunset Glow", image: "pochette.jpg", descrizione: "Calda e solare come un tramonto sul bagnasciuga.", misura: "30 cm", colore1: "Arancione", colore1Hex: "#f28538", colore2: "Oro", colore2Hex: "#d1b456", price: 18 },
+    { id: 17, categoria: "pochette", name: "Pochette Sabbia Dolce", image: "pochette.jpg", descrizione: "Tonalità neutra e versatile abbinabile con tutto.", misura: "25 cm", colore1: "Beige", colore1Hex: "#e6d5b8", colore2: "Marrone", colore2Hex: "#633c30", price: 14 },
+    { id: 18, categoria: "pochette", name: "Pochette Royal Blue", image: "pochette.jpg", descrizione: "Sofisticata e signorile con ricami ben definiti.", misura: "20 cm", colore1: "Blu", colore1Hex: "#184eab", colore2: "Nero", colore2Hex: "#000000", price: 13 },
+
+    { id: 19, categoria: "scatto", name: "Borsa Retro Scatto", image: "borsascatto.webp", descrizione: "Fascino vintage intramontabile con solida clip metallica.", misura: "20 cm", colore1: "Marrone", colore1Hex: "#633c30", colore2: "Nero", colore2Hex: "#000000", price: 25 },
+    { id: 20, categoria: "scatto", name: "Borsa Scatto Imperial", image: "borsascatto.webp", descrizione: "Lussuoso accostamento regale ad alta densità di maglia.", misura: "25 cm", colore1: "Viola", colore1Hex: "#6b1b75", colore2: "Oro", colore2Hex: "#d1b456", price: 32 },
+    { id: 21, categoria: "scatto", name: "Borsa Scatto Minimalist", image: "borsascatto.webp", descrizione: "Linee pulite ed essenziali adatte alla quotidianità.", misura: "15 cm", colore1: "Nero", colore1Hex: "#000000", colore2: "Beige", colore2Hex: "#e6d5b8", price: 20 },
+    { id: 22, categoria: "scatto", name: "Borsa Scatto Marine", image: "borsascatto.webp", descrizione: "Finitura bicolore che ricorda le onde del profondo oceano.", misura: "20 cm", colore1: "Blu", colore1Hex: "#184eab", colore2: "Verde", colore2Hex: "#3fa750", price: 26 },
+    { id: 23, categoria: "scatto", name: "Borsa Scatto Coral", image: "borsascatto.webp", descrizione: "Vivace, leggera e allegra per i look diurni estivi.", misura: "20 cm", colore1: "Arancione", colore1Hex: "#f28538", colore2: "Rosa", colore2Hex: "#d5748e", price: 24 },
+    { id: 24, categoria: "scatto", name: "Borsa Scatto Crimson", image: "borsascatto.webp", descrizione: "Un pezzo unico dal colore profondo e magnetico.", misura: "25 cm", colore1: "Rosso", colore1Hex: "#b32626", colore2: "Nero", colore2Hex: "#000000", price: 30 },
+
+    { id: 25, categoria: "tracolla", name: "Tracolla Urban Daily", image: "borsatracolla.webp", descrizione: "Comoda tracolla intrecciata adatta alle lunghe giornate lavorative.", misura: "Media", colore1: "Beige", colore1Hex: "#e6d5b8", colore2: "Marrone", colore2Hex: "#633c30", price: 22 },
+    { id: 26, categoria: "tracolla", name: "Tracolla Midnight Sky", image: "borsatracolla.webp", descrizione: "Robusta e capiente con una splendida sfumatura scura.", misura: "Grande", colore1: "Nero", colore1Hex: "#000000", colore2: "Blu", colore2Hex: "#184eab", price: 26 },
+    { id: 27, categoria: "tracolla", name: "Tracolla Spring Field", image: "borsatracolla.webp", descrizione: "Toni pastello che richiamano lo sbocciare dei fiori.", misura: "Media", colore1: "Verde", colore1Hex: "#3fa750", colore2: "Rosa", colore2Hex: "#d5748e", price: 20 },
+    { id: 28, categoria: "tracolla", name: "Tracolla Fire Blossom", image: "borsatracolla.webp", descrizione: "Forte contrasto cromatico per non passare inosservata.", misura: "Piccola", colore1: "Rosso", colore1Hex: "#b32626", colore2: "Arancione", colore2Hex: "#f28538", price: 18 },
+    { id: 29, categoria: "tracolla", name: "Tracolla Amethyst", image: "borsatracolla.webp", descrizione: "Lavorazione raffinata ed elegante a spina di pesce.", misura: "Media", colore1: "Viola", colore1Hex: "#6b1b75", colore2: "Nero", colore2Hex: "#000000", price: 23 },
+    { id: 30, categoria: "tracolla", name: "Tracolla Golden Hour", image: "borsatracolla.webp", descrizione: "Splendidi riflessi metallici che impreziosiscono la maglia.", misura: "Grande", colore1: "Oro", colore1Hex: "#d1b456", colore2: "Beige", colore2Hex: "#e6d5b8", price: 28 },
+
+    { id: 31, categoria: "accessori", name: "Porta AirPods Uncinetto", image: "accessori.jpg", descrizione: "Custodia protettiva anti-urto per i tuoi auricolari wireless.", misura: "Unica", colore1: "Beige", colore1Hex: "#e6d5b8", colore2: "Marrone", colore2Hex: "#633c30", price: 5 },
+    { id: 32, categoria: "accessori", name: "Porta Telefono Cozy", image: "accessori.jpg", descrizione: "Pratica bustina da collo protettiva per il tuo smartphone.", misura: "Unica", colore1: "Nero", colore1Hex: "#000000", colore2: "Oro", colore2Hex: "#d1b456", price: 8 },
+    { id: 33, categoria: "accessori", name: "Portanchiavi Amigurumi", image: "accessori.jpg", descrizione: "Simpatico ciondolo per borsa o mazzo di chiavi cucito a mano.", misura: "Unica", colore1: "Rosa", colore1Hex: "#d5748e", colore2: "Viola", colore2Hex: "#6b1b75", price: 4 },
+    { id: 34, categoria: "accessori", name: "Porta Occhiali Elegance", image: "accessori.jpg", descrizione: "Custodia morbida interna per evitare graffi sulle lenti.", misura: "Unica", colore1: "Blu", colore1Hex: "#184eab", colore2: "Beige", colore2Hex: "#e6d5b8", price: 7 },
+    { id: 35, categoria: "accessori", name: "Bustina Portamonete", image: "accessori.jpg", descrizione: "Mini borsellino interno compatto con chiusura lampo.", misura: "Unica", colore1: "Verde", colore1Hex: "#3fa750", colore2: "Marrone", colore2Hex: "#633c30", price: 6 },
+    { id: 36, categoria: "accessori", name: "Fascia Capelli Glam", image: "accessori.jpg", descrizione: "Fascia elastica tricot morbida e confortevole per capelli.", misura: "Unica", colore1: "Arancione", colore1Hex: "#f28538", colore2: "Rosso", colore2Hex: "#b32626", price: 9 }
+];
+
+const mappaColoriHex = {
+    "Nero": "#000000", "Marrone": "#633c30", "Blu": "#184eab", "Verde": "#3fa750", 
+    "Viola": "#6b1b75", "Beige": "#e6d5b8", "Rosso": "#b32626", "Rosa": "#d5748e", 
+    "Arancione": "#f28538", "Oro": "#d1b456", "Azzurro": "#0ba3ea", "Bianco": "#ffffff"
+};
+
+function switchTab(tabName) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    
+    if(tabName === 'configuratore') {
+        document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+        document.getElementById('tab-configuratore').classList.add('active');
+    } else {
+        document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+        document.getElementById('tab-vetrina').classList.add('active');
+        renderVetrina();
+    }
+}
+
+const cards = document.getElementById('cards');
+prodotti.forEach((p, i) => {
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = `
+        <div class="photo">${p.image ? `<img src="${p.image}" alt="${p.name}">` : p.name}</div>
+        <h3>${p.name}</h3>
+        <select onchange="scegliMisura(${i}, this.value); event.stopPropagation();">
+            <option value="">Seleziona misura...</option>
+            ${p.misure.map(m => `<option value="${m.name}|${m.price}">${m.name}</option>`).join('')}
+        </select>
+    `;
+    d.onclick = () => {
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+        d.classList.add('selected');
+        selezione = p;
+        aggiornaAnteprimaConfiguratore();
+    };
+    cards.appendChild(d);
+});
+
+function filtraVetrina(categoria, bottonePremuto) {
+    document.querySelectorAll('.sub-tab-btn').forEach(btn => btn.classList.remove('active'));
+    bottonePremuto.classList.add('active');
+    filtroAttivo = categoria;
+    renderVetrina();
+}
+
+function renderVetrina() {
+    const vetrinaContainer = document.getElementById('vetrina-cards');
+    if(!vetrinaContainer) return;
+    vetrinaContainer.innerHTML = '';
+    const prodottiFiltrati = vetrinaBorse.filter(b => b.categoria === filtroAttivo);
+
+    prodottiFiltrati.forEach(b => {
+        const vc = document.createElement('div');
+        vc.className = 'vetrina-card';
+        vc.onclick = () => apriModaleVetrina(b); 
+        vc.innerHTML = `
+            <div style="width: 100%;">
+                <div class="photo"><img src="${b.image}" onerror="this.src='https://via.placeholder.com/280x160?text=Borsa'" alt="${b.name}"></div>
+                <h3 style="font-size:16px; margin: 8px 0; color:#5c4033;">${b.name}</h3>
+                <p style="font-size:13px; font-weight:bold; color:#777; margin:0;">Misura: ${b.misura}</p>
+            </div>
+            <div style="width: 100%;">
+                <div class="vetrina-price">€${b.price}</div>
+                <div class="vetrina-buttons-container">
+                    <button class="btn-vedi-dettagli">Vedi Dettagli</button>
+                    <button class="btn-carrello-rapido" title="Aggiungi direttamente al carrello" onclick="event.stopPropagation(); aggiungiVetrinaAlCarrello(${JSON.stringify(b).replace(/"/g, '&quot;')});">
+                        <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
+                    </button>
+                </div>
+            </div>
+        `;
+        vetrinaContainer.appendChild(vc);
+    });
+}
+
+renderVetrina();
+
+function apriModaleVetrina(b) {
+    document.getElementById('v-modal-title').innerText = b.name;
+    document.getElementById('v-modal-img').innerHTML = `<img src="${b.image}" style="width:100%; height:100%; object-fit:cover;">`;
+    document.getElementById('v-modal-desc').innerText = b.descrizione;
+    document.getElementById('v-modal-misura').innerText = b.misura;
+    
+    document.getElementById('v-modal-c1').innerText = b.colore1;
+    if(b.colore1Hex) {
+        document.getElementById('v-modal-box1').innerHTML = `<span class="specifica-color-box" style="background-color: ${b.colore1Hex};"></span>`;
+    } else {
+        document.getElementById('v-modal-box1').innerHTML = '';
+    }
+
+    document.getElementById('v-modal-c2').innerText = b.colore2;
+    if(b.colore2Hex) {
+        document.getElementById('v-modal-box2').innerHTML = `<span class="specifica-color-box" style="background-color: ${b.colore2Hex};"></span>`;
+    } else {
+        document.getElementById('v-modal-box2').innerHTML = '';
+    }
+
+    document.getElementById('v-modal-price').innerText = `€${b.price}`;
+    
+    const btnAcquisto = document.getElementById('v-modal-add-btn');
+    btnAcquisto.onclick = () => {
+        aggiungiVetrinaAlCarrello(b);
+        chiudiModaleVetrina();
+    };
+    document.getElementById('vetrinaModal').classList.add('active');
+}
+
+function chiudiModaleVetrina() {
+    document.getElementById('vetrinaModal').classList.remove('active');
+}
+
+function chiudiModaleSeEsterno(event, modalId) {
+    if (event.target.id === modalId) {
+        if (modalId === 'vetrinaModal') chiudiModaleVetrina();
+        if (modalId === 'customModal') chiudiModalSenzaSvuotare();
+    }
+}
+
+window.scegliMisura = (i, val) => {
+    selezione = prodotti[i];
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    cards.children[i].classList.add('selected');
+    if (!val) {
+        misura = { name: '', price: 0 };
+    } else {
+        const [name, price] = val.split('|');
+        misura = { name, price: Number(price) };
+    }
+    aggiornaAnteprimaConfiguratore();
+};
+
+document.querySelectorAll('#container-colore1 .color').forEach(c => {
+    c.onclick = (e) => {
+        e.stopPropagation();
+        const name = c.dataset.name; const color = c.dataset.color;
+        if (c.classList.contains('selected')) { colori1 = []; c.classList.remove('selected'); } 
+        else { document.querySelectorAll('#container-colore1 .color').forEach(el => el.classList.remove('selected')); colori1 = [{ name, price:0, color }]; c.classList.add('selected'); }
+        aggiornaAnteprimaConfiguratore();
+    };
+});
+
+document.querySelectorAll('#container-colore2 .color').forEach(c => {
+    c.onclick = (e) => {
+        e.stopPropagation();
+        const name = c.dataset.name; const price = Number(c.dataset.price); const color = c.dataset.color;
+        if (c.classList.contains('selected')) { colori2 = []; c.classList.remove('selected'); } 
+        else { document.querySelectorAll('#container-colore2 .color').forEach(el => el.classList.remove('selected')); colori2 = [{ name, price, color }]; c.classList.add('selected'); }
+        aggiornaAnteprimaConfiguratore();
+    };
+});
+
+function pulisciColoreSelezionato(gridNum) {
+    if (gridNum === 1) { colori1 = []; document.querySelectorAll('#container-colore1 .color').forEach(el => el.classList.remove('selected')); } 
+    else if (gridNum === 2) { colori2 = []; document.querySelectorAll('#container-colore2 .color').forEach(el => el.classList.remove('selected')); }
+    aggiornaAnteprimaConfiguratore();
+}
+
+function aggiornaAnteprimaConfiguratore() {
+    const liveModello = document.getElementById('live-modello');
+    const liveGrandezza = document.getElementById('live-grandezza');
+    const badge1 = document.getElementById('live-preview-c1');
+    const badge2 = document.getElementById('live-preview-c2');
+    const previewImg = document.getElementById('preview');
+
+    if (!selezione) {
+        previewImg.src = "https://via.placeholder.com/280x200?text=Seleziona+una+borsa";
+        liveModello.innerText = "Nessuno";
+        liveGrandezza.innerText = "Non selezionata";
+        badge1.style.display = 'none';
+        badge2.style.display = 'none';
+        return;
+    }
+
+    liveModello.innerText = selezione.name;
+    liveGrandezza.innerText = misura.name ? misura.name : "Non selezionata";
+
+    const tExtra1 = document.getElementById('richieste-colore1').value.trim();
+    if (colori1.length > 0) {
+        badge1.style.display = 'inline-flex';
+        badge1.innerHTML = `Colore 1: ${colori1[0].name} <span style="display:inline-block; width:16px; height:16px; border-radius:3px; background:${colori1[0].color}; border:1px solid #999; margin-left:5px;"></span>`;
+    } else if (tExtra1) {
+        badge1.style.display = 'inline-flex';
+        badge1.innerHTML = `Colore 1: Extra ("${tExtra1}")`;
+    } else {
+        badge1.style.display = 'inline-flex';
+        badge1.innerHTML = `Colore 1: Non selezionato`;
+    }
+
+    const tExtra2 = document.getElementById('richieste-colore2').value.trim();
+    if (colori2.length > 0) {
+        badge2.style.display = 'inline-flex';
+        badge2.innerHTML = `Colore 2: ${colori2[0].name} <span style="display:inline-block; width:16px; height:16px; border-radius:3px; background:${colori2[0].color}; border:1px solid #999; margin-left:5px;"></span>`;
+    } else if (tExtra2) {
+        badge2.style.display = 'inline-flex';
+        badge2.innerHTML = `Colore 2: Extra ("${tExtra2}")`;
+    } else {
+        badge2.style.display = 'inline-flex';
+        badge2.innerHTML = `Colore 2: Non selezionato`;
+    }
+
+    if (colori1.length > 0 && colori2.length > 0) {
+        const c1 = colori1[0].name.toLowerCase();
+        const c2 = colori2[0].name.toLowerCase();
+        const immagineCombinata = `${c1}-${c2}.png`;
+        
+        previewImg.src = immagineCombinata;
+        previewImg.onerror = function() {
+            previewImg.src = selezione.image;
+            previewImg.onerror = null;
+        };
+    } else {
+        previewImg.src = selezione.image;
+        previewImg.onerror = null;
+    }
+}
+
+function aggiungiVetrinaAlCarrello(borsa) {
+    carrello.push({
+        tipo: 'vetrina',
+        idUnivoco: 'vetrina_' + borsa.id + '_' + Date.now(),
+        name: borsa.name,
+        image: borsa.image,
+        baseImage: borsa.image,
+        misura: borsa.misura,
+        colore1: borsa.colore1,
+        colore1Hex: borsa.colore1Hex || '#ccc',
+        colore2: borsa.colore2,
+        colore2Hex: borsa.colore2Hex || '#ccc',
+        price: borsa.price
+    });
+    renderCarrello();
+    document.getElementById('sezione-carrello').scrollIntoView({ behavior: 'smooth' });
+}
+
+function aggiungiConfigurataAlCarrello() {
+    if (!selezione || !misura.name) { alert('Scegli tipologia e misura.'); return; }
+    const testoExtra1 = document.getElementById('richieste-colore1').value.trim();
+    const testoExtra2 = document.getElementById('richieste-colore2').value.trim();
+
+    let c1Nome = colori1.length ? colori1[0].name : (testoExtra1 ? `Extra ("${testoExtra1}")` : 'Non specificato');
+    let c1Hex = colori1.length ? mappaColoriHex[colori1[0].name] : null;
+    
+    let c2Nome = colori2.length ? colori2[0].name : (testoExtra2 ? `Extra ("${testoExtra2}")` : 'Non specificato');
+    let c2Hex = colori2.length ? mappaColoriHex[colori2[0].name] : null;
+
+    let calcolaPrezzo = misura.price + (colori2.length ? colori2[0].price : 0);
+
+    let immagineConfigurata = selezione.image;
+    if (colori1.length > 0 && colori2.length > 0) {
+        immagineConfigurata = `${colori1[0].name.toLowerCase()}-${colori2[0].name.toLowerCase()}.png`;
+    }
+
+    carrello.push({
+        tipo: 'personalizzato',
+        idUnivoco: 'config_' + Date.now(),
+        name: `Personalizzata (${selezione.name})`,
+        image: immagineConfigurata,
+        baseImage: selezione.image, 
+        misura: misura.name,
+        colore1: c1Nome,
+        colore1Hex: c1Hex,
+        colore2: c2Nome,
+        colore2Hex: c2Hex,
+        price: calcolaPrezzo
+    });
+
+    renderCarrello();
+    document.getElementById('richieste-colore1').value = '';
+    document.getElementById('richieste-colore2').value = '';
+    pulisciColoreSelezionato(1); pulisciColoreSelezionato(2);
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+    selezione = null; misura = { name: '', price: 0 };
+    aggiornaAnteprimaConfiguratore();
+    document.getElementById('sezione-carrello').scrollIntoView({ behavior: 'smooth' });
+}
+
+function rimuoviDalCarrello(idUnivoco) {
+    carrello = carrello.filter(item => item.idUnivoco !== idUnivoco);
+    renderCarrello();
+}
+
+function renderCarrello() {
+    const container = document.getElementById('summary');
+    if (carrello.length === 0) {
+        container.innerHTML = `<p style="color:#777;"><i>Il carrello è vuoto.</i></p>`;
+        document.getElementById('totale').innerText = 'Totale ordine: €0';
+        return;
+    }
+
+    container.innerHTML = '';
+    let totalePrezzo = 0;
+
+    carrello.forEach(item => {
+        totalePrezzo += item.price;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        
+        let tagTipo = item.tipo === 'vetrina' ? `<span style="color:#2e6b43; font-weight:bold; font-size: 14px; text-transform: uppercase; margin-bottom: 2px; display: block;">[PRONTA CONSEGNA]</span>` : `<span style="color:#b32626; font-weight:bold; font-size: 14px; text-transform: uppercase; margin-bottom: 2px; display: block;">[PERSONALIZZATA]</span>`;
+        
+        let boxColore1 = item.colore1Hex ? `<span class="cart-color-mini-box" style="background-color: ${item.colore1Hex};"></span>` : `<i style="font-style: italic;">"${item.colore1}"</i>`;
+        let boxColore2 = item.colore2Hex ? `<span class="cart-color-mini-box" style="background-color: ${item.colore2Hex};"></span>` : `<i style="font-style: italic;">"${item.colore2}"</i>`;
+
+        div.innerHTML = `
+            <div class="cart-left-block">
+                <div class="cart-thumb">
+                    <img src="${item.image}" onerror="this.src='${item.baseImage}'; this.onerror=function(){this.src='https://via.placeholder.com/180?text=Borsa'}" alt="anteprima">
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 8px; color: #333; flex: 1; justify-content: center;">
+                    <div>
+                        ${tagTipo} 
+                        <strong style="font-size: 19px; color: #5c4033; line-height: 1.3;">${item.name}</strong>
+                    </div>
+                    <div style="font-size: 15px; margin-top: 2px;"><strong>Misura:</strong> ${item.misura}</div>
+                    <div style="display: flex; align-items: center; gap: 4px; font-weight: bold; font-size: 15px;">
+                        <span>Colori:</span> C1: ${boxColore1} <span style="color: #ccc; font-weight: normal; margin: 0 6px;">|</span> C2: ${boxColore2}
+                    </div>
+                    <div style="font-weight: bold; color: #3fa750; font-size: 21px; margin-top: 6px;">€${item.price}</div>
+                </div>
+            </div>
+            <button class="btn-rimuovi" onclick="rimuoviDalCarrello('${item.idUnivoco}')">Rimuovi</button>
+        `;
+        container.appendChild(div);
+    });
+
+    document.getElementById('totale').innerText = 'Totale ordine: €' + totalePrezzo;
+}
+
+function formattaTelefono(input) {
+    let num = input.value.replace(/\D/g, '');
+    if (num.length > 10) num = num.substring(0, 10);
+    let formattato = "";
+    if (num.length > 0) formattato += num.substring(0, 3);
+    if (num.length > 3) formattato += "-" + num.substring(3, 6);
+    if (num.length > 6) formattato += "-" + num.substring(6, 10);
+    input.value = formattato;
+}
+
+function validaTelefonoAlVolo() {
+    const warning = document.getElementById('phone-warning');
+    const inputTelefono = document.getElementById('telefono');
+    let pure = inputTelefono.value.replace(/\D/g, '');
+    if (pure.length > 0 && pure.length !== 10) { warning.style.display = 'block'; inputTelefono.style.borderColor = '#b32626'; } 
+    else { warning.style.display = 'none'; inputTelefono.style.borderColor = '#ccc'; }
+}
+
+// Converte l'immagine locale in Base64 prima di inviare l'email in modo da includerla nell'HTML della mail
+function convertiImmagineInBase64(url) {
+    return new Promise((resolve) => {
+        if (!url || url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+            resolve(url || 'https://via.placeholder.com/180?text=Borsa');
+            return;
+        }
+        const img = new Image();
+        img.crossOrigin = 'Anonymous';
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            canvas.width = this.width;
+            canvas.height = this.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL('image/png'));
+        };
+        img.onerror = function() {
+            resolve('https://via.placeholder.com/180?text=Borsa');
+        };
+        img.src = url;
+    });
+}
+
+async function conferma() {
+    const inputNome = document.getElementById('nome');
+    const inputCognome = document.getElementById('cognome');
+    const inputTelefono = document.getElementById('telefono');
+
+    if (carrello.length === 0 || !inputNome.value.trim() || !inputCognome.value.trim() || !inputTelefono.value.trim()) { 
+        alert('Controlla i dati cliente ed il carrello.'); 
+        return; 
+    }
+    if (inputTelefono.value.replace(/\D/g, '').length !== 10) { 
+        alert('Il telefono richiede 10 cifre.'); 
+        return; 
+    }
+
+    let datiClienteHtml = `<strong>Cliente:</strong> ${inputNome.value.trim()} ${inputCognome.value.trim()}<br><strong>Tel:</strong> ${inputTelefono.value.trim()}`;
+    
+    let prodottiHtml = "";
+    let htmlPerEmail = ""; 
+    
+    for (let i = 0; i < carrello.length; i++) {
+        const item = carrello[i];
+        
+        // Conversione dell'immagine per farla vedere via mail
+        const stringaImmagineEmail = await convertiImmagineInBase64(item.image);
+
+        let boxColore1 = item.colore1Hex ? `<span class="specifica-color-box" style="background-color: ${item.colore1Hex};"></span>` : `<i style="font-style: italic;">"${item.colore1}"</i>`;
+        let boxColore2 = item.colore2Hex ? `<span class="specifica-color-box" style="background-color: ${item.colore2Hex};"></span>` : `<i style="font-style: italic;">"${item.colore2}"</i>`;
+        
+        let tagTipo = item.tipo === 'vetrina' ? `<span style="color:#2e6b43; font-weight:bold; font-size: 14px; text-transform: uppercase; display: block; margin-bottom: 2px;">[PRONTA CONSEGNA]</span>` : `<span style="color:#b32626; font-weight:bold; font-size: 14px; text-transform: uppercase; display: block; margin-bottom: 2px;">[PERSONALIZZATA]</span>`;
+
+        prodottiHtml += `
+            <div style="display: flex; gap: 20px; align-items: center; background: #f9f6f0; padding: 15px; border-radius: 12px; border-left: 4px solid #5c4033; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); text-align: left; min-height: 180px; box-sizing: border-box;">
+                <div style="width: 180px; height: 180px; background: #e8e8e8; border-radius: 8px; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
+                    <img src="${item.image}" onerror="this.src='${item.baseImage}'; this.onerror=function(){this.src='https://via.placeholder.com/180?text=Borsa'}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 8px; color: #333; justify-content: center;">
+                    <div>
+                        ${tagTipo} 
+                        <strong style="font-size: 19px; color: #5c4033; line-height: 1.3;">${item.name}</strong>
+                    </div>
+                    <div style="font-size: 15px;"><strong>Misura:</strong> ${item.misura}</div>
+                    <div style="display: flex; align-items: center; gap: 4px; font-weight: bold; font-size: 15px;">
+                        <span>Colori:</span> C1: ${boxColore1} <span style="color: #ccc; font-weight: normal; margin: 0 6px;">|</span> C2: ${boxColore2}
+                    </div>
+                    <div style="font-weight: bold; color: #3fa750; font-size: 21px; margin-top: 6px;">€${item.price}</div>
+                </div>
+            </div>
+        `;
+
+        let mailBoxColore1 = item.colore1Hex ? `<table role="presentation" style="display:inline-block; vertical-align:middle; margin:0 4px; border:1px solid #777777; border-radius:4px; background-color:${item.colore1Hex};" width="20" height="20"><tr><td></td></tr></table>` : `"${item.colore1}"`;
+        let mailBoxColore2 = item.colore2Hex ? `<table role="presentation" style="display:inline-block; vertical-align:middle; margin:0 4px; border:1px solid #777777; border-radius:4px; background-color:${item.colore2Hex};" width="20" height="20"><tr><td></td></tr></table>` : `"${item.colore2}"`;
+
+        htmlPerEmail += `
+            <div style="background-color: #f9f6f0; padding: 15px; border-radius: 12px; border-left: 5px solid #5c4033; margin-bottom: 15px; font-family: Arial, sans-serif; text-align: left;">
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tr>
+                        <td width="190" valign="top" style="padding-right: 15px;">
+                            <div style="width: 180px; height: 180px; background-color: #e8e8e8; border-radius: 8px; overflow: hidden; border: 1px solid #eeeeee;">
+                                <img src="${stringaImmagineEmail}" alt="Borsa" width="180" height="180" style="width: 180px; height: 180px; display: block; border:0;">
+                            </div>
+                        </td>
+                        <td valign="middle" style="color: #333333;">
+                            <div style="margin-bottom: 4px;">${tagTipo}</div>
+                            <div style="font-size: 19px; font-weight: bold; color: #5c4033; margin-bottom: 6px; line-height: 1.3;">${item.name}</div>
+                            <div style="font-size: 15px; margin-bottom: 4px;"><strong>Misura:</strong> ${item.misura}</div>
+                            <div style="font-size: 15px; margin-bottom: 6px; line-height: 20px;">
+                                <strong>Colori:</strong> C1: ${mailBoxColore1} <span style="color:#cccccc; margin: 0 4px;">|</span> C2: ${mailBoxColore2}
+                            </div>
+                            <div style="font-size: 21px; font-weight: bold; color: #3fa750; margin-top: 4px;">€${item.price}</div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        `;
+    }
+    
+    prodottiHtml += `<br><strong style="font-size: 22px; color: #3fa750; display:block; text-align:right; margin-top: 5px;">${document.getElementById('totale').innerText}</strong>`;
+    
+    htmlPerEmail += `
+        <div style="font-family: Arial, sans-serif; font-size: 20px; font-weight: bold; color: #3fa750; margin-top: 20px; padding-top: 10px; border-top: 2px dashed #dddddd; text-align: right;">
+            ${document.getElementById('totale').innerText}
+        </div>
+    `;
+
+    document.getElementById('modalDatiCliente').innerHTML = datiClienteHtml;
+    document.getElementById('modalDatiBorsa').innerHTML = prodottiHtml;
+
+    const templateParams = {
+        to_name: "Amministratore",
+        cliente_nome: inputNome.value.trim(),
+        cliente_cognome: inputCognome.value.trim(),
+        cliente_telefono: inputTelefono.value.trim(),
+        riepilogo_ordine: htmlPerEmail, 
+    };
+
+    emailjs.send("sito-web_indjkabnc9382", "template_j2n0g2f", templateParams)
+        .then(function(response) {
+            console.log("Email inviata con successo!", response.status, response.text);
+        }, function(error) {
+            console.log("Errore nell'invio:", error);
+            alert("Errore nell'invio dell'email, ma l'ordine è visualizzabile a schermo.");
+        });
+
+    document.getElementById('customModal').classList.add('active');
+}
+
+function chiudiModalSenzaSvuotare() {
+    document.getElementById('customModal').classList.remove('active');
+}
+
+function chiudiModalConSvuotamento() {
+    document.getElementById('customModal').classList.remove('active');
+    carrello = []; 
+    renderCarrello();
+    document.getElementById('nome').value = ''; 
+    document.getElementById('cognome').value = '';
+    document.getElementById('telefono').value = '';
+}
+</script>
+
+</body>
+</html>
